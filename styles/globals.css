@@ -25,6 +25,12 @@ h1 {
   margin-bottom: 20px;
 }
 
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
 .btn {
   display: inline-block;
   background: #ee0000;
