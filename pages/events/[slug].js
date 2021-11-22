@@ -1,41 +1,31 @@
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { FaPencilAlt, FaTimes } from "react-icons/fa";
 import Link from "next/link";
 import Image from "next/image";
 import Layout from "@/components/Layout";
+import EventMap from "@/components/EventMap";
 import { API_URL } from "@/config/index";
 import styles from "@/styles/Event.module.css";
 
 export default function EventPage({ evt }) {
-  const deleteEvent = (e) => {
-    e.preventDefault();
-    console.log("delete");
-  };
-
   if (!evt) return <div></div>;
 
   return (
     <Layout>
       <div className={styles.event}>
-        <div className={styles.controls}>
-          <Link href={`/events/edit/${evt.id}`}>
-            <a>
-              <FaPencilAlt /> Edit Event
-            </a>
-          </Link>
-          <a href="#" className={styles.delete} onClick={deleteEvent}>
-            <FaTimes /> Delete Event
-          </a>
-        </div>
-
         <span>
           {new Date(evt.date).toLocaleDateString("en-US")} at {evt.time}
         </span>
 
         <h1>{evt.name}</h1>
+
+        <ToastContainer />
+
         {evt.image && (
           <div className={styles.image}>
             <Image
-              src={evt.image[0].formats.medium.url}
+              src={evt.image.formats.medium.url}
               width={960}
               height={600}
               alt=""
@@ -49,6 +39,8 @@ export default function EventPage({ evt }) {
         <p>{evt.description}</p>
         <h2>Venue: {evt.venue}</h2>
         <p>{evt.address}</p>
+
+        <EventMap evt={evt} />
 
         <Link href="/events">
           <a className={styles.back}>{"<"} Go Back</a>
@@ -83,3 +75,14 @@ export async function getStaticProps({ params: { slug } }) {
     revalidate: 1,
   };
 }
+
+// export async function getServerSideProps({ params: { slug } }) {
+//   const res = await fetch(`${API_URL}/events?slug=${slug}`);
+//   const events = await res.json();
+
+//   return {
+//     props: {
+//       evt: events[0],
+//     },
+//   };
+// }

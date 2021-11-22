@@ -24,7 +24,9 @@ export default function Layout({
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta name="keywords" content={keywords} />
-        <link rel="preload" href={showcaseImageUrl} as="image" />
+        {showcaseImageUrl && (
+          <link rel="preload" href={showcaseImageUrl} as="image" />
+        )}
       </Head>
 
       <Header />
